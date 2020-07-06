@@ -1,8 +1,8 @@
 /*
  * Utility function to inject CSS for print style
  */
-import { loadCSSFromString } from '@airtable/blocks/ui';
-export const HIDE_CLASS = 'printHide';
+import { loadCSSFromString } from "@airtable/blocks/ui";
+export const HIDE_CLASS = "printHide";
 
 export default function printInvoice(invoice, onClose) {
   let invoicePrintStyle;
@@ -18,9 +18,8 @@ export default function printInvoice(invoice, onClose) {
         }
     }
     `);
-  } else {
-    // Shows report listing
   }
+
   const printStyle = loadCSSFromString(`
     @media print {
       .${HIDE_CLASS} {
