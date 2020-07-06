@@ -1,14 +1,14 @@
 import React from 'react';
 import moment from 'moment';
 import loadInvoiceCSS from './loadInvoiceCSS';
+import Logo from './CompanyLogo';
 
 export default function Invoice({
   currentInvoice,
   currentInvoiceItemization,
   currentClient,
   currentTerms,
-  companyInformation,
-  companyLogo
+  companyInformation
 }) {
   if (!currentInvoice) {
     return null;
@@ -36,12 +36,9 @@ export default function Invoice({
     'Invoice Date'
   );
 
-  companyLogo = companyInformation[0].getCellValueAsString('Logo');
-  console.log(companyLogo);
-  /*
-  companyLogo =
-    'https://dl.airtable.com/.attachments/c6fcc84c5294f958cea98d2abb0f5c01/322efafa/MixableLogo.png';
-*/
+  let companyLogo = companyInformation[0]
+    .getCellValueAsString('Logo')
+    .match(/\(([^)]+)\)/)[1]; // Sorry, this feels so wrong.
 
   let invoiceDate = currentInvoice.getCellValue('Invoice Date');
 
@@ -66,20 +63,7 @@ export default function Invoice({
           <tbody>
             <tr>
               <td>
-                <img
-                  alt={txtCompanyName}
-                  src={companyLogo}
-                  style={{
-                    width: '6cm',
-                    height: '2cm',
-                    display: 'block'
-                  }}
-                />
-                <div className="logo">
-                  <a href={companyLogo}>
-                    {txtCompanyName} {companyLogo}
-                  </a>
-                </div>
+                <Logo url={companyLogo} />
               </td>
               <td>
                 <dl>

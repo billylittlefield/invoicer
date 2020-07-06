@@ -72,7 +72,6 @@ function InvoicerBlock() {
   );
   const [currentTerms, setCurrentTerms] = useState(null);
   const [companyInformation, setCompanyInformation] = useState(null);
-  const [companyLogo, setCompanyLogo] = useState(null);
   const [defaultInvoice, setDefaultInvoice] = useState(null);
 
   // Sets the default values for invoice
@@ -406,9 +405,6 @@ function InvoicerBlock() {
                         setCurrentTerms(linkedTermsRecords);
                         setCompanyInformation(configRecords);
                         setCurrentInvoice(linkedRecord);
-                        setCompanyLogo(
-                          'https://dl.airtable.com/.attachments/c6fcc84c5294f958cea98d2abb0f5c01/322efafa/MixableLogo.png'
-                        );
                       }}
                     >
                       Preview & Print
@@ -435,7 +431,6 @@ function InvoicerBlock() {
         currentTerms={currentTerms}
         currentInvoiceItemization={currentInvoiceItemization}
         companyInformation={companyInformation}
-        companyLogo={companyLogo}
       />
     </div>
   );

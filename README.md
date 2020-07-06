@@ -1,6 +1,8 @@
-# Invoicer for Airtable Blocks
+# Invoicer Block for Airtable
 
 This an easy-to-use Airtable Block that allows for quick invoice generation. Invoices are generated using standard browser save to PDF, allowing users to send invoices using their preferred method (email, snail mail, etc.).
+
+Created for the [Airtable Hackathon](https://devpost.com/software/invoice-generator).
 
 ## How to run this block
 
