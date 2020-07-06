@@ -76,22 +76,19 @@ function InvoicerBlock() {
 
   // Sets the default values for invoice
   if (!defaultInvoice) {
-    // TODO: Get newest invoice number by +1 the latest, converted to autoincrement in table side
     let date = moment().format('YYYY-MM-DD');
-    // TODO: Get default status of "Under Development". Sadly, could not find clear reference on status insertion.
-    let status = [{ id: 'Under Development' }];
-    status = null;
-    // TODO: Get default client (pull from table isDefault)
-    let client = null;
-    /*
-    let client = { fields: {
-        'Type': { name: 'Dfdfd'},
-        'Product': [{id: product.id{]}}]
-    }};
-    */
-    // TODO: Get default term (pull from table isDefault)
-    let terms = null;
 
+    // TODO: Get default status of "Under Development". Sadly, could not find clear reference on status insertion.
+    let status = {
+      id: 'selZuMLnUYgbdRfXr',
+      name: 'Under Development',
+      color: 'yellowLight1'
+    };
+    // TODO: Get default client (pull from table isDefault)
+    let client = { id: 'recHzUuifYGX7noeq', name: 'Tracy Johnson' };
+
+    // TODO: Get default term (pull from table isDefault)
+    let terms = { id: 'recmUvp5hom1GKM97', name: 'Upon Receipt' };
     setDefaultInvoice({
       'Invoice Date': date,
       Status: status,
@@ -116,6 +113,36 @@ function InvoicerBlock() {
 
     if (table.hasPermissionToCreateRecord(recordFields)) {
       const newRecordId = await table.createRecordAsync(recordFields);
+      const freshQueryResult = await table.selectRecordsAsync();
+      expandRecord(freshQueryResult.getRecordById(newRecordId));
+    }
+  }
+
+  // Async function to duplicate a record
+  async function duplicateInvoice(recordFields) {
+    const table = base.getTableByName(INVOICE_TABLE_NAME);
+    let date = moment().format('YYYY-MM-DD');
+    console.log('recordFields.id', recordFields.id);
+    console.log(
+      'recordFields.invoice date',
+      recordFields.getCellValue('Invoice Date')
+    );
+    console.log('recordFields.status', recordFields.getCellValue('Status'));
+    console.log('recordFields.Client', recordFields.getCellValue('Client'));
+    console.log('recordFields.Terms', recordFields.getCellValue('Terms'));
+
+    let duplicateInvoice = {
+      'Invoice Date': date,
+      Status: recordFields.getCellValue('Status'),
+      Title: '[COPY] ' + recordFields.getCellValue('Title'),
+      Description: recordFields.getCellValue('Description'),
+      Notes: recordFields.getCellValue('Notes'),
+      Itemization: recordFields.getCellValue('Itemization'),
+      Client: recordFields.getCellValue('Client'),
+      Terms: recordFields.getCellValue('Terms')
+    };
+    if (table.hasPermissionToCreateRecord(duplicateInvoice)) {
+      const newRecordId = await table.createRecordAsync(duplicateInvoice);
       const freshQueryResult = await table.selectRecordsAsync();
       expandRecord(freshQueryResult.getRecordById(newRecordId));
     }
@@ -395,6 +422,17 @@ function InvoicerBlock() {
                       Edit
                     </Button>
                     <Button
+                      icon="duplicate"
+                      aria-label="Duplicate Invoice"
+                      variant="secondary"
+                      marginRight={3}
+                      onClick={async function () {
+                        await duplicateInvoice(linkedRecord);
+                      }}
+                    >
+                      Duplicate
+                    </Button>
+                    <Button
                       icon="print"
                       aria-label="Print Invoice"
                       variant="default"
@@ -407,7 +445,7 @@ function InvoicerBlock() {
                         setCurrentInvoice(linkedRecord);
                       }}
                     >
-                      Preview & Print
+                      Print
                     </Button>
                   </td>
                 </tr>
