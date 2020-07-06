@@ -1,0 +1,22 @@
+{
+  "name": "invoicer",
+  "version": "0.1.0",
+  "description": "Easy to use invoice generator Block, fully configurable from Airtable tables.",
+  "author": "David Chien",
+  "license": "",
+  "dependencies": {
+    "@airtable/blocks": "0.0.53",
+    "moment": "^2.27.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.3.0",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^2.0.1"
+  },
+  "scripts": {
+    "lint": "eslint frontend",
+    "start": "block run"
+  }
+}
