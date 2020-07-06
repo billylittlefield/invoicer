@@ -81,14 +81,17 @@ function InvoicerBlock() {
     // TODO: Get default status of "Under Development". Sadly, could not find clear reference on status insertion.
     let status = {
       id: 'selZuMLnUYgbdRfXr',
-      name: 'Under Development'
+      name: 'Under Development',
+      color: 'yellowLight1'
     };
     // TODO: Get default client (pull from table isDefault)
-    let client = { id: 'recHzUuifYGX7noeq' };
+    let client = { id: 'recHzUuifYGX7noeq', name: 'Tracy Johnson' };
     client = null;
 
     // TODO: Get default term (pull from table isDefault)
-    let terms = { id: 'recmUvp5hom1GKM97' };
+    let terms = { id: 'recmUvp5hom1GKM97', name: 'Upon Receipt' };
+    terms = null;
+
     setDefaultInvoice({
       'Invoice Date': date,
       Status: status,
