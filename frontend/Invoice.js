@@ -16,7 +16,11 @@ export default function Invoice({
 
   loadInvoiceCSS(); // Loads the Invoice print CSS
 
+  const REPLACE_INVOICE_DATE = 'INVOICE_DATE';
+  const REPLACE_COMPANY_NAME = 'COMPANY_NAME';
+
   // Interface labels, pulled from table.
+  let txtCompanyName = companyInformation[0].getCellValueAsString('Name');
   let txtBalanceDue = companyInformation[0].getCellValueAsString('Balance Due');
   let txtRemitTo = companyInformation[0].getCellValueAsString('Remit To');
   let txtBillTo = companyInformation[0].getCellValueAsString('Bill To');
@@ -32,13 +36,28 @@ export default function Invoice({
     'Invoice Date'
   );
 
+  companyLogo = companyInformation[0].getCellValueAsString('Logo');
+  console.log(companyLogo);
   /*
-  let companyLogo = companyInformation[0].getCellValueAsString('Logo');
-
   companyLogo =
     'https://dl.airtable.com/.attachments/c6fcc84c5294f958cea98d2abb0f5c01/322efafa/MixableLogo.png';
 */
-  console.log(companyLogo);
+
+  let invoiceDate = currentInvoice.getCellValue('Invoice Date');
+
+  // String replacement for terms and conditions
+  function processTerms(terms) {
+    let processedTerms = terms;
+    processedTerms = processedTerms.replace(
+      REPLACE_INVOICE_DATE,
+      moment(invoiceDate, 'YYYY-MM-DD', true).format('MMMM D, YYYY')
+    );
+    processedTerms = processedTerms.replace(
+      REPLACE_COMPANY_NAME,
+      txtCompanyName
+    );
+    return processedTerms;
+  }
 
   return (
     <div className="invoice">
@@ -48,8 +67,8 @@ export default function Invoice({
             <tr>
               <td>
                 <img
-                  alt="Company Logo"
-                  src="https://dl.airtable.com/.attachments/c6fcc84c5294f958cea98d2abb0f5c01/322efafa/MixableLogo.png"
+                  alt={txtCompanyName}
+                  src={companyLogo}
                   style={{
                     width: '6cm',
                     height: '2cm',
@@ -57,7 +76,9 @@ export default function Invoice({
                   }}
                 />
                 <div className="logo">
-                  <a href={companyLogo}>{companyLogo}</a>
+                  <a href={companyLogo}>
+                    {txtCompanyName} {companyLogo}
+                  </a>
                 </div>
               </td>
               <td>
@@ -66,11 +87,9 @@ export default function Invoice({
                   <dd>{currentInvoice.name}</dd>
                   <dt>{txtInvoiceDate}</dt>
                   <dd>
-                    {moment(
-                      currentInvoice.getCellValue('Invoice Date'),
-                      'YYYY-MM-DD',
-                      true
-                    ).format('MMMM D, YYYY')}
+                    {moment(invoiceDate, 'YYYY-MM-DD', true).format(
+                      'MMMM D, YYYY'
+                    )}
                   </dd>
                   <dt>
                     <strong>{txtBalanceDue}</strong>
@@ -163,7 +182,9 @@ export default function Invoice({
         </table>
         <h2>{txtTerms}</h2>
         {currentTerms.map((currentTerm) => {
-          let terms = currentTerm.getCellValueAsString('Description');
+          let terms = processTerms(
+            currentTerm.getCellValueAsString('Description')
+          );
           return (
             <p
               key={currentTerm.id}
